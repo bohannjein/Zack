@@ -10,11 +10,11 @@
 
 Zack is the fastest, most lightweight way to beam photos, documents, and videos from your Android device directly to your home server, NAS, or PC. No cables, no cloud delays, no privacy concerns.
 
-&lt;p align="center"&gt;
-  &lt;img src="screenshots/preview.png" width="32%" /&gt;
-  &lt;img src="screenshots/screenshot-2.png" width="32%" /&gt;
-  &lt;img src="screenshots/screenshot-settings.png" width="32%" /&gt;
-&lt;/p&gt;
+<p align="center">
+  <img src="screenshots/preview.png" width="32%" />
+  <img src="screenshots/screenshot-2.png" width="32%" />
+  <img src="screenshots/screenshot-settings.png" width="32%" />
+</p>
 
 &lt;/div&gt;
 
@@ -49,8 +49,8 @@ Most file transfers are a chore: you either need a USB cable or you have to uplo
 ##
 
 ### Requirements
-- Android 8.1 (API 27) or higher
-- Internet access for cloud storage connections
+Android 8.1 (API 27) or higher
+Internet access for cloud storage connections
 
 ### Build from Source
 ```bash

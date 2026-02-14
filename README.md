@@ -6,45 +6,54 @@
 <img src="https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=android&logoColor=white" />
 <img src="https://img.shields.io/badge/Material%20Design%203-757575?style=for-the-badge&logo=material-design&logoColor=white" />
 
-# Zack
-**Zack** is the fastest, most lightweight way to beam photos, documents, and videos from your Android device directly to your home server, NAS, or PC. 
-No cables, no cloud delays, no privacy concerns. Just **Zack!**
+**Stop emailing files to yourself. Start "Zacking" them.**
 
-<p align="center">
-  <img src="screenshots/preview.png" width="32%" />
-  <img src="screenshots/screenshot-2.png" width="32%" />
-  <img src="screenshots/screenshot-settings.png" width="32%" />
-</p>
+Zack is the fastest, most lightweight way to beam photos, documents, and videos from your Android device directly to your home server, NAS, or PC. No cables, no cloud delays, no privacy concerns.
 
-</div>
+&lt;p align="center"&gt;
+  &lt;img src="screenshots/preview.png" width="32%" /&gt;
+  &lt;img src="screenshots/screenshot-2.png" width="32%" /&gt;
+  &lt;img src="screenshots/screenshot-settings.png" width="32%" /&gt;
+&lt;/p&gt;
 
-## ✨ Features
+&lt;/div&gt;
 
-- 🚀 **Zack Upload:** Instant file sharing from any app via the Android Share Menu or internal file picker.
-- 🛡️ **Privacy Focused:** Direct SMB transfers within your local network. No external servers, no tracking, no middlemen.
-- 🔒 **Biometric Security:** Protect your server configurations and transfer history with Fingerprint or Face Scan (App Lock).
-- ⚡ **Modern Design:** - **Symmetric UI:** Innovative "Top-Right Action" button combined with a perfectly centered "Bottom Navigation Pill".
-    - **Gliding Navigation:** Smoothly switch between History and Server lists with animated transitions.
-    - **Glassmorphism:** A dynamic lightning bolt icon with modern mesh gradients.
-- 📊 **Smart History:** Keep track of your uploads with a visual log. Failed uploads are highlighted, and active ones show live progress.
-- 🌓 **Theme Support:** Choose between Light, Dark, and a true AMOLED Black mode to save battery and look sharp.
-- 🔔 **Notification Sync:** Optional status updates for your background uploads, so you know when it's done.
+<div align="left">
 
-## 🛠️ Technical Stack
+## Why Zack?
 
-- **UI:** Jetpack Compose with Material 3
-- **Architecture:** Room Database with KSP, WorkManager for background tasks
-- **Protocol:** SMBJ for high-performance network storage communication
-- **Security:** AndroidX Biometric & EncryptedSharedPreferences
+Most file transfers are a chore: you either need a USB cable or you have to upload your private data to a third-party cloud just to get it onto your computer. Zack changes the game by creating a direct, secure bridge between your phone and your local network (SMB).
 
-## 🚀 How it works
+### Key Features
 
-1. **Configure:** Add your NAS or Windows Share once.
-2. **Select:** Open any file or gallery image on your phone.
-3. **Share:** Hit "Share" and pick **Zack**.
-**Done. Zack!**
+**One-Tap Sharing**: Use the standard Android "Share" menu from any app (Gallery, Files, Browser) and select Zack. 
 
----
+**Privacy First**: Your data never leaves your local network. Zack directly talks to your devices. No external servers, no tracking, no middleman.
+
+**Biometric Security**: Keep your server configurations safe. Protect the app with your fingerprint or face scan so only you can access your transfer history and settings.
+
+**Transfer History**: A clean, visual log of all your uploads. See exactly what was sent, when, and to which server.
+
+**Vibe Coded**: The app is obviously vibe coded.
+
+## How it works
+
+1. **Configure** your SMB server (NAS, Windows Share, Mac, or Linux) once
+2. **Select** a file on your phone
+3. **Hit "Share"** and pick Zack
+4. **Done.** Zack!
+
+
 <div align="center">
-Made with ❤️ for speed and privacy.
-</div>
+
+##
+
+### Requirements
+- Android 8.1 (API 27) or higher
+- Internet access for cloud storage connections
+
+### Build from Source
+```bash
+git clone https://github.com/bohannjein/zack.git
+cd zack
+./gradlew assembleRelease

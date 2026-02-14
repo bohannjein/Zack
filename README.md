@@ -16,8 +16,6 @@ Zack is the fastest, most lightweight way to beam photos, documents, and videos 
   <img src="screenshots/screenshot-settings.png" width="32%" />
 </p>
 
-&lt;/div&gt;
-
 <div align="left">
 
 ## Why Zack?
@@ -54,6 +52,7 @@ Internet access for cloud storage connections
 
 ### Build from Source
 ```bash
+<div align="center">
 git clone https://github.com/bohannjein/zack.git
 cd zack
 ./gradlew assembleRelease

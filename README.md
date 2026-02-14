@@ -1,24 +1,20 @@
-# ⚡ Zack - Network Storage Drop
-
 <div align="center">
 
 <img src="https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white" />
 <img src="https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=android&logoColor=white" />
 <img src="https://img.shields.io/badge/Material%20Design%203-757575?style=for-the-badge&logo=material-design&logoColor=white" />
 
-# Zack
-Zack is a modern Android app for quickly uploading files to network storage (NAS, Servers, Cloud Storage). 
-Supports SMB, SFTP, FTP, and WebDAV with an intuitive Material You design.
-
-<img src="screenshots/preview.png" width="300" />
-
-</div>
+# ⚡ Zack - Network Storage Drop
 
 **Zack** is a modern Android app for quickly uploading files to network storage (NAS, Servers, Cloud Storage). Supports SMB, SFTP, FTP, and WebDAV with an intuitive Material You design.
 
-&lt;p align="center"&gt;
-  &lt;img src="screenshots/preview.png" width="300" /&gt;
-&lt;/p&gt;
+<p align="center">
+  <img src="screenshots/preview.png" width="32%" />
+  <img src="screenshots/screenshot-2.png" width="32%" />
+  <img src="screenshots/screenshot-settings.png" width="32%" />
+</p>
+
+</div>
 
 ## ✨ Features
 

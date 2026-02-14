@@ -8,7 +8,7 @@
 
 **Stop emailing files to yourself. Start "Zacking" them.**
 
-Zack is the fastest, most lightweight way to beam photos, documents, and videos from your Android device directly to your home server, NAS, or PC. No cables, no cloud delays, no privacy concerns.
+Zack is the fastest, most lightweight way to send photos, documents, and videos from your Android device directly to your home server, NAS, or PC. No cables, no cloud delays, no privacy concerns.
 
 <p align="center">
   <img src="screenshots/preview.png" width="32%" />

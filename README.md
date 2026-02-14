@@ -51,8 +51,9 @@ Android 8.1 (API 27) or higher
 Internet access for cloud storage connections
 
 ### Build from Source
-```bash
 <div align="center">
-git clone https://github.com/bohannjein/zack.git
+
+```bash
+git clone [https://github.com/bohannjein/zack.git](https://github.com/bohannjein/zack.git)
 cd zack
 ./gradlew assembleRelease

@@ -18,11 +18,7 @@ Zack is the fastest, most lightweight way to send photos, documents, and videos 
 
 <div align="left">
 
-## Why Zack?
-
-Most file transfers are a chore: you either need a USB cable or you have to upload your private data to a third-party cloud just to get it onto your computer. Zack changes the game by creating a direct, secure bridge between your phone and your local network (SMB).
-
-### Key Features
+### Features
 
 **One-Tap Sharing**: Use the standard Android "Share" menu from any app (Gallery, Files, Browser) and select Zack. 
 

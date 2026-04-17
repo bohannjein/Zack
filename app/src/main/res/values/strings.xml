@@ -1,3 +1,151 @@
 <resources>
     <string name="app_name">Zack</string>
+    
+    <!-- Navigation & Screens -->
+    <string name="screen_history">History</string>
+    <string name="screen_servers">Servers</string>
+    <string name="screen_settings">Settings</string>
+    <string name="screen_add_server">Add Server</string>
+    <string name="screen_new_server">New %1$s</string>
+    <string name="screen_edit_server">Edit %1$s</string>
+    
+    <!-- Actions -->
+    <string name="action_close">Close</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_save">Save</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_unlock">Unlock</string>
+    <string name="action_select_all">Select All</string>
+    
+    <!-- Server Setup -->
+    <string name="server_display_name">Display Name (Optional)</string>
+    <string name="server_ip_host">IP / Host</string>
+    <string name="server_url_host">URL / Host</string>
+    <string name="server_port">Port</string>
+    <string name="server_remote_path">Remote Path</string>
+    <string name="server_workgroup">Workgroup / Domain</string>
+    <string name="server_username">Username</string>
+    <string name="server_password">Password</string>
+    <string name="server_authentication">Authentication</string>
+    <string name="server_save">Save Server</string>
+    
+    <!-- Protocol Selection -->
+    <string name="protocol_select">Select Protocol</string>
+    <string name="protocol_local_scan">Local Scan</string>
+    <string name="protocol_smb">SMB</string>
+    <string name="protocol_sftp">SFTP</string>
+    <string name="protocol_ftp">FTP</string>
+    <string name="protocol_webdav">WebDAV</string>
+    
+    <!-- Network Discovery -->
+    <string name="scanning_network">Scanning for network storages…</string>
+    <string name="device_not_found">Device not found? Enter IP manually</string>
+    
+    <!-- Selection -->
+    <string name="items_selected">%1$d selected</string>
+    
+    <!-- Dialogs -->
+    <string name="dialog_delete_title">Delete?</string>
+    <string name="dialog_lock_title">Zack Locked</string>
+    <string name="dialog_lock_subtitle">Authenticate to access</string>
+    <string name="dialog_security_title">Zack Security</string>
+    <string name="dialog_security_subtitle">Confirm change</string>
+    
+    <!-- Settings -->
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_uploads">Uploads</string>
+    <string name="settings_security">Security &amp; Notifications</string>
+    <string name="settings_auto_rename">Auto-Rename Files</string>
+    <string name="settings_auto_rename_desc">Appends timestamp to filename</string>
+    <string name="settings_app_lock">App Lock</string>
+    <string name="settings_app_lock_desc">PIN/Fingerprint required</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_notifications_desc">Show status updates</string>
+    
+    <!-- Theme Options -->
+    <string name="theme_system">System Default</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_amoled">AMOLED</string>
+    <string name="theme_select">Select Theme</string>
+    
+    <!-- Empty States -->
+    <string name="empty_history">No history yet</string>
+    <string name="empty_servers">No servers yet</string>
+    <string name="empty_servers_add">Add Server</string>
+    
+    <!-- Upload -->
+    <string name="upload_zack_to">Zack to…</string>
+    <string name="upload_success_toast">Zack!</string>
+    <string name="upload_status_uploading">Uploading</string>
+    <string name="upload_status_success">Success</string>
+    <string name="upload_status_failed">Failed</string>
+    
+    <!-- Notifications -->
+    <string name="notification_upload_successful">Upload successful</string>
+    <string name="notification_upload_failed">Upload failed</string>
+    <string name="notification_upload_progress">Uploading %1$s</string>
+    <string name="notification_channel_name">File Transfers</string>
+    
+    <!-- Content Descriptions -->
+    <string name="cd_settings">Settings</string>
+    <string name="cd_close">Close</string>
+    <string name="cd_add">Add</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_delete">Delete</string>
+    <string name="cd_edit">Edit</string>
+    <string name="cd_select_all">Select all</string>
+    <string name="cd_star">Star</string>
+    <string name="cd_unstar">Unstar</string>
+    <string name="cd_history">History</string>
+    <string name="cd_servers">Servers</string>
+    <string name="cd_lock">Lock</string>
+    <string name="cd_storage">Storage</string>
+    <string name="cd_next">Next</string>
+    <string name="cd_check">Check</string>
+    <string name="cd_error">Error</string>
+    <string name="cd_upload">Upload</string>
+    <string name="cd_done">Done</string>
+    <string name="cd_server_icon">Server icon</string>
+    <string name="cd_protocol_icon">Protocol icon</string>
+    <string name="cd_theme">Theme</string>
+    <string name="cd_fingerprint">Fingerprint</string>
+    <string name="cd_notifications">Notifications</string>
+    <string name="cd_rename">Rename</string>
+    
+    <!-- Error Messages -->
+    <string name="error_auth_failed">Authentication failed</string>
+    <string name="error_network">Network error: %1$s</string>
+    <string name="error_smb">SMB connection error: %1$s</string>
+    <string name="error_unknown">Unknown error: %1$s</string>
+    <string name="error_invalid_ip">Invalid IP address</string>
+    <string name="error_invalid_port">Port must be between 1 and 65535</string>
+    <string name="error_host_required">Host / IP is required</string>
+    <string name="error_path_required">Share path is required</string>
+
+    <!-- Protocol -->
+    <string name="protocol_coming_soon">Coming Soon</string>
+
+    <!-- Server Setup -->
+    <string name="server_password_hint_edit">Leave empty to keep existing password</string>
+
+    <!-- Upload -->
+    <string name="upload_cancel">Cancel upload</string>
+
+    <!-- Accent Colors -->
+    <string name="settings_accent_color">Accent Color</string>
+
+    <!-- History Retention -->
+    <string name="settings_keep_history">Keep History</string>
+    <string name="retention_forever">Forever</string>
+    <string name="retention_7">7 days</string>
+    <string name="retention_30">30 days</string>
+    <string name="retention_90">90 days</string>
+
+    <!-- Connection Test -->
+    <string name="server_test_connection">Test Connection</string>
+    <string name="server_test_success">Connected successfully</string>
+    <string name="server_test_testing">Testing…</string>
 </resources>

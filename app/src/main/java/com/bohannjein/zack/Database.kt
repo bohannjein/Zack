@@ -26,7 +26,8 @@ data class NetworkServer(
     val shareName: String,
     val domain: String = "WORKGROUP",
     val username: String = "",
-    val isDefault: Boolean = false
+    val isDefault: Boolean = false,
+    val colorIndex: Int = 0
 )
 
 @Entity(tableName = "history")
@@ -75,7 +76,13 @@ val MIGRATION_9_10 = object : Migration(9, 10) {
     }
 }
 
-@Database(entities = [NetworkServer::class, UploadEntry::class], version = 10, exportSchema = false)
+val MIGRATION_10_11 = object : Migration(10, 11) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+        database.execSQL("ALTER TABLE servers ADD COLUMN colorIndex INTEGER NOT NULL DEFAULT 0")
+    }
+}
+
+@Database(entities = [NetworkServer::class, UploadEntry::class], version = 11, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun serverDao(): ServerDao
     abstract fun historyDao(): HistoryDao
@@ -86,7 +93,7 @@ object DatabaseInstance {
     fun get(context: Context): AppDatabase {
         return INSTANCE ?: synchronized(this) {
             Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "zack-db")
-                .addMigrations(MIGRATION_9_10)
+                .addMigrations(MIGRATION_9_10, MIGRATION_10_11)
                 .build().also { INSTANCE = it }
         }
     }
@@ -119,7 +126,8 @@ data class ZackItem(
     val isError: Boolean = false,
     val isSpecial: Boolean = false,
     val isUploading: Boolean = false,
-    val workTag: String = ""
+    val workTag: String = "",
+    val colorIndex: Int = -1
 )
 
 fun UploadEntry.toZackItem(): ZackItem {
@@ -151,5 +159,6 @@ fun NetworkServer.toZackItem() = ZackItem(
     subtitle = "$protocol • $hostIp",
     isError = false,
     isSpecial = isDefault,
-    isUploading = false
+    isUploading = false,
+    colorIndex = colorIndex
 )

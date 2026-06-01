@@ -73,27 +73,32 @@ class UploadWorker(appContext: Context, workerParams: WorkerParameters) :
                         SMB2ShareAccess.ALL, SMB2CreateDisposition.FILE_OVERWRITE_IF, null
                     )
 
-                    FileInputStream(file).use { input ->
-                        val buffer = ByteArray(8192)
-                        var offset = 0L
-                        var bytesRead: Int
-                        var lastReportedPercent = -1
+                    // smbj's OutputStream batches writes up to the negotiated max SMB write
+                    // size (~1 MB), so we avoid thousands of tiny per-block network round-trips.
+                    remoteFile.use { rf ->
+                        rf.outputStream.use { output ->
+                            FileInputStream(file).use { input ->
+                                val buffer = ByteArray(UPLOAD_BUFFER_SIZE)
+                                var offset = 0L
+                                var bytesRead: Int
+                                var lastReportedPercent = -1
 
-                        while (input.read(buffer).also { bytesRead = it } != -1) {
-                            remoteFile.write(java.nio.ByteBuffer.wrap(buffer, 0, bytesRead), offset)
-                            offset += bytesRead
+                                while (input.read(buffer).also { bytesRead = it } != -1) {
+                                    output.write(buffer, 0, bytesRead)
+                                    offset += bytesRead
 
-                            if (fileSize > 0) {
-                                val percent = (offset * 100 / fileSize).toInt()
-                                if (percent != lastReportedPercent && percent % 5 == 0) {
-                                    postProgressNotification(context, notifId, fileName, offset, fileSize)
-                                    lastReportedPercent = percent
+                                    if (fileSize > 0) {
+                                        val percent = (offset * 100 / fileSize).toInt()
+                                        if (percent != lastReportedPercent && percent % 5 == 0) {
+                                            postProgressNotification(context, notifId, fileName, offset, fileSize)
+                                            lastReportedPercent = percent
+                                        }
+                                    }
                                 }
+                                output.flush()
                             }
                         }
                     }
-
-                    remoteFile.close()
                 }
             }
 
@@ -196,5 +201,6 @@ class UploadWorker(appContext: Context, workerParams: WorkerParameters) :
         private const val CHANNEL_ID = "zack_upload_channel"
         private const val PROGRESS_NOTIF_BASE = 10_000L
         private const val MAX_RETRIES = 3
+        private const val UPLOAD_BUFFER_SIZE = 1024 * 1024
     }
 }

@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1
+
+### What's New
+
+- New "About" section in Settings — shows the current app version and a link to the GitHub repository, plus a short note on what Zack does
+
 ## v1.0 — The Real One
 
 > From "it works on my phone" to something you'd actually trust with your files.

@@ -125,9 +125,6 @@
     <string name="error_host_required">Host / IP is required</string>
     <string name="error_path_required">Share path is required</string>
 
-    <!-- Protocol -->
-    <string name="protocol_coming_soon">Coming Soon</string>
-
     <!-- Server Setup -->
     <string name="server_password_hint_edit">Leave empty to keep existing password</string>
 
@@ -148,4 +145,12 @@
     <string name="server_test_connection">Test Connection</string>
     <string name="server_test_success">Connected successfully</string>
     <string name="server_test_testing">Testing…</string>
+    <string name="server_color">Color</string>
+
+    <!-- About -->
+    <string name="settings_about">About</string>
+    <string name="settings_app_version">App Version</string>
+    <string name="settings_github">GitHub Repository</string>
+    <string name="settings_github_desc">View source code &amp; report issues</string>
+    <string name="github_url">https://github.com/bohannjein/Zack</string>
 </resources>

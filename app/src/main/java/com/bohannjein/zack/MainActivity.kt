@@ -379,31 +379,22 @@ fun ProtocolSelectionDialog(onProtocolSelected: (String) -> Unit, onDismiss: () 
         Column(Modifier.padding(p).padding(16.dp).verticalScroll(rememberScrollState())) {
             Text(stringResource(R.string.protocol_select), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(bottom = 16.dp))
 
-            data class ProtocolEntry(val name: String, val icon: ImageVector, val available: Boolean)
+            data class ProtocolEntry(val name: String, val icon: ImageVector)
             val protocols = listOf(
-                ProtocolEntry("Local Scan", Icons.Filled.Radar, true),
-                ProtocolEntry("SMB", Icons.Filled.FolderShared, true),
-                ProtocolEntry("SFTP", Icons.Filled.Lock, false),
-                ProtocolEntry("FTP", Icons.Filled.Cloud, false),
-                ProtocolEntry("WebDAV", Icons.Filled.Http, false)
+                ProtocolEntry("Local Scan", Icons.Filled.Radar),
+                ProtocolEntry("SMB", Icons.Filled.FolderShared)
             )
 
             protocols.forEach { entry ->
                 Card(
-                    onClick = { if (entry.available) onProtocolSelected(entry.name) },
-                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp).alpha(if (entry.available) 1f else 0.45f),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-                    enabled = entry.available
+                    onClick = { onProtocolSelected(entry.name) },
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh)
                 ) {
                     Row(Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically) {
                         Icon(imageVector = entry.icon, contentDescription = stringResource(R.string.cd_protocol_icon), tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(32.dp))
                         Spacer(Modifier.width(16.dp))
                         Text(entry.name, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
-                        if (!entry.available) {
-                            Surface(shape = MaterialTheme.shapes.small, color = MaterialTheme.colorScheme.secondaryContainer) {
-                                Text(stringResource(R.string.protocol_coming_soon), modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp), style = MaterialTheme.typography.labelSmall)
-                            }
-                        }
                     }
                 }
             }
@@ -431,6 +422,7 @@ fun ServerSetupScreen(edit: NetworkServer?, onDismiss: () -> Unit) {
     var domain by remember { mutableStateOf(edit?.domain ?: "WORKGROUP") }
     var user by remember { mutableStateOf(edit?.username ?: "") }
     var pass by remember { mutableStateOf("") }
+    var colorIndex by remember { mutableIntStateOf((edit?.colorIndex ?: 0).coerceIn(accentPresets.indices)) }
 
     var hostError by remember { mutableStateOf<String?>(null) }
     var pathError by remember { mutableStateOf<String?>(null) }
@@ -502,6 +494,24 @@ fun ServerSetupScreen(edit: NetworkServer?, onDismiss: () -> Unit) {
                 }
             } else {
                 ZackTextField(value = name, onValueChange = { name = it }, label = "Display Name (Optional)", imeAction = ImeAction.Next)
+
+                Text(stringResource(R.string.server_color), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 4.dp, bottom = 8.dp))
+                Row(modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(bottom = 12.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    accentPresets.forEachIndexed { index, preset ->
+                        val isSelected = index == colorIndex
+                        Box(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .clip(CircleShape)
+                                .background(preset.color)
+                                .then(if (isSelected) Modifier.border(3.dp, MaterialTheme.colorScheme.onSurface, CircleShape) else Modifier)
+                                .clickable { colorIndex = index },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            if (isSelected) Icon(Icons.Filled.Check, contentDescription = null, tint = preset.onColor, modifier = Modifier.size(20.dp))
+                        }
+                    }
+                }
 
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     Box(modifier = Modifier.weight(1f)) {
@@ -657,7 +667,8 @@ fun ServerSetupScreen(edit: NetworkServer?, onDismiss: () -> Unit) {
                                     shareName = path,
                                     domain = domain,
                                     username = user,
-                                    isDefault = edit?.isDefault ?: false
+                                    isDefault = edit?.isDefault ?: false,
+                                    colorIndex = colorIndex
                                 )
                                 val newId = if (edit?.id == 0L || edit == null) db.serverDao().insertServer(n) else { db.serverDao().updateServer(n); n.id }
                                 if (pass.isNotBlank()) SecureStorage(ctx).savePassword(newId, pass)
@@ -744,7 +755,12 @@ fun ExpressiveListScreen(items: List<ZackItem>, selectedIds: MutableList<Long>, 
                             )
                         ) {
                             Row(Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Box(Modifier.size(48.dp).clip(RoundedCornerShape(16.dp)), Alignment.Center) {
+                                val swatch = item.colorIndex.takeIf { it in accentPresets.indices }?.let { accentPresets[it].color }
+                                Box(
+                                    Modifier.size(48.dp).clip(RoundedCornerShape(16.dp))
+                                        .then(if (swatch != null && !selected && !item.isUploading && !item.isError) Modifier.background(swatch.copy(alpha = 0.18f)) else Modifier),
+                                    Alignment.Center
+                                ) {
                                     if (item.isUploading) {
                                         CircularProgressIndicator(Modifier.size(24.dp), MaterialTheme.colorScheme.primary, 3.dp)
                                     } else if (selected) {
@@ -753,7 +769,7 @@ fun ExpressiveListScreen(items: List<ZackItem>, selectedIds: MutableList<Long>, 
                                         Icon(
                                             imageVector = item.icon,
                                             contentDescription = null,
-                                            tint = if (item.isError) MaterialTheme.colorScheme.error else if (item.isSpecial) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                            tint = if (item.isError) MaterialTheme.colorScheme.error else swatch ?: if (item.isSpecial) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
                                 }
@@ -796,13 +812,15 @@ fun ShareBottomSheetScreen(uris: List<Uri>) {
     LaunchedEffect(Unit) {
         withContext(Dispatchers.IO) {
             val db = DatabaseInstance.get(ctx)
-            val defaults = db.serverDao().getDefaultServers()
-            if (defaults.isNotEmpty()) { defaults.forEach { s -> prepareAndUpload(ctx, s.id, uris) }; withContext(Dispatchers.Main) { Toast.makeText(ctx, "Zack!", Toast.LENGTH_SHORT).show(); activity?.finish() } }
-            else if (db.serverDao().getServerCount() == 1) { val s = db.serverDao().getFirstServer(); s?.let { prepareAndUpload(ctx, it.id, uris) }; withContext(Dispatchers.Main) { Toast.makeText(ctx, "Zack!", Toast.LENGTH_SHORT).show(); activity?.finish() } }
+            if (db.serverDao().getServerCount() == 1) {
+                val s = db.serverDao().getFirstServer()
+                s?.let { prepareAndUpload(ctx, it.id, uris) }
+                withContext(Dispatchers.Main) { Toast.makeText(ctx, "Zack!", Toast.LENGTH_SHORT).show(); activity?.finish() }
+            }
         }
     }
     val servers by DatabaseInstance.get(ctx).serverDao().getAllServers().collectAsState(initial = emptyList())
-    if (servers.size > 1 && servers.none { it.isDefault }) ServerSelectionSheet(uris, { activity?.finish() }) else Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator(color = MaterialTheme.colorScheme.primary) }
+    if (servers.size > 1) ServerSelectionSheet(uris, { activity?.finish() }) else Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator(color = MaterialTheme.colorScheme.primary) }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -814,7 +832,27 @@ fun ServerSelectionSheet(uris: List<Uri>, onDismiss: () -> Unit) {
         Column(modifier = Modifier.padding(24.dp).fillMaxWidth()) {
             Text("Zack to...", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
             Spacer(Modifier.height(24.dp))
-            LazyColumn { items(servers) { s -> Card(onClick = { scope.launch { prepareAndUpload(ctx, s.id, uris); onDismiss() } }, modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) { Row(Modifier.padding(16.dp)) { Icon(imageVector = Icons.Filled.Storage, contentDescription = null, tint = MaterialTheme.colorScheme.primary); Spacer(Modifier.width(16.dp)); Text(s.displayName) } } } }
+            LazyColumn {
+                items(servers) { s ->
+                    val swatch = s.colorIndex.takeIf { it in accentPresets.indices }?.let { accentPresets[it].color } ?: MaterialTheme.colorScheme.primary
+                    Card(
+                        onClick = { scope.launch { prepareAndUpload(ctx, s.id, uris); onDismiss() } },
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)
+                    ) {
+                        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Box(Modifier.size(40.dp).clip(CircleShape).background(swatch.copy(alpha = 0.20f)), Alignment.Center) {
+                                Icon(imageVector = Icons.Filled.Storage, contentDescription = null, tint = swatch)
+                            }
+                            Spacer(Modifier.width(16.dp))
+                            Column(Modifier.weight(1f)) {
+                                Text(s.displayName, fontWeight = FontWeight.SemiBold)
+                                Text("${s.protocol} • ${s.hostIp}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                            if (s.isDefault) Icon(Icons.Filled.Star, contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(20.dp))
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -839,7 +877,7 @@ suspend fun prepareAndUpload(context: Context, serverId: Long, uris: List<Uri>) 
                 }
 
                 val cacheFile = File(context.cacheDir, fileName)
-                context.contentResolver.openInputStream(uri)?.use { input -> FileOutputStream(cacheFile).use { output -> input.copyTo(output) } }
+                context.contentResolver.openInputStream(uri)?.use { input -> FileOutputStream(cacheFile).use { output -> input.copyTo(output, 1024 * 1024) } }
                 val workTag = java.util.UUID.randomUUID().toString()
                 startUploadWork(context, cacheFile.absolutePath, serverId, workTag)
             } catch (e: Exception) { e.printStackTrace() }
@@ -902,6 +940,14 @@ fun SettingsScreen(themeMode: Int, onThemeChange: (Int) -> Unit, accentIndex: In
     var retentionDays by remember { mutableIntStateOf(prefs.getInt("history_retention_days", 0)) }
     var showThemeMenu by remember { mutableStateOf(false) }
     var showRetentionMenu by remember { mutableStateOf(false) }
+    val appVersion = remember {
+        try {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: ""
+        } catch (e: Exception) {
+            ""
+        }
+    }
+    val githubUrl = stringResource(R.string.github_url)
 
     fun authenticateToToggle(targetState: Boolean) {
         if (activity == null) return
@@ -956,6 +1002,24 @@ fun SettingsScreen(themeMode: Int, onThemeChange: (Int) -> Unit, accentIndex: In
 
             Text("Notifications", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(12.dp))
             ListItem(headlineContent = { Text("Notifications") }, supportingContent = { Text("Show status updates") }, leadingContent = { Icon(imageVector = Icons.Filled.Notifications, contentDescription = null) }, trailingContent = { Switch(checked = notificationsEnabled, onCheckedChange = { notificationsEnabled = it; prefs.edit().putBoolean("notifications_enabled", it).apply() }, colors = SwitchDefaults.colors(checkedTrackColor = MaterialTheme.colorScheme.primary)) })
+
+            HorizontalDivider(Modifier.padding(vertical = 12.dp))
+
+            Text(stringResource(R.string.settings_about), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(12.dp))
+            ListItem(
+                headlineContent = { Text(stringResource(R.string.settings_app_version)) },
+                supportingContent = { Text(if (appVersion.isNotEmpty()) "v$appVersion" else "—") },
+                leadingContent = { Icon(imageVector = Icons.Filled.Info, contentDescription = null) }
+            )
+            ListItem(
+                modifier = Modifier.clip(RoundedCornerShape(12.dp)).clickable {
+                    runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(githubUrl))) }
+                },
+                headlineContent = { Text(stringResource(R.string.settings_github)) },
+                supportingContent = { Text(stringResource(R.string.settings_github_desc)) },
+                leadingContent = { Icon(imageVector = Icons.Filled.Code, contentDescription = null) },
+                trailingContent = { Icon(imageVector = Icons.Filled.OpenInNew, contentDescription = null) }
+            )
         }
         if (showThemeMenu) ModalBottomSheet(onDismissRequest = { showThemeMenu = false }) {
             Column(Modifier.padding(16.dp).padding(bottom = 32.dp)) {
